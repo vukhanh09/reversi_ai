@@ -18,13 +18,11 @@ public class GamePanel extends JPanel implements GameEngine {
     //swing elements
     BoardCell[][] cells;
     JLabel score1;
+    JLabel tab;
     JLabel score2;
 
-    int totalscore1 = 0;
-    int totalscore2 = 0;
-
-    JLabel tscore1;
-    JLabel tscore2;
+    int p1score = 0;
+    int p2score = 0;
 
 
     GamePlayer player1 = new HumanPlayer(1);
@@ -45,7 +43,6 @@ public class GamePanel extends JPanel implements GameEngine {
     public GamePanel(){
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
-
         JPanel reversiBoard = new JPanel();
         reversiBoard.setLayout(new GridLayout(8,8));
         reversiBoard.setPreferredSize(new Dimension(500,500));
@@ -64,30 +61,28 @@ public class GamePanel extends JPanel implements GameEngine {
 
 
         JPanel sidebar = new JPanel();
-        sidebar.setLayout(new BoxLayout(sidebar,BoxLayout.Y_AXIS));
-        sidebar.setPreferredSize(new Dimension(200,0));
-
-        score1 = new JLabel("Score 1");
-        score2 = new JLabel("Score 2");
-
-        tscore1 = new JLabel("Total Score 1");
-        tscore2 = new JLabel("Total Score 2");
+        sidebar.setBackground(new Color(110,150,230));
+        score1 = new JLabel();
+        score1.setFont(new Font(" ",Font.CENTER_BASELINE,15));
+        score1.setForeground(Color.black);
+        score2 = new JLabel();
+        score2.setFont(new Font(" ",Font.CENTER_BASELINE,15));
+        score2.setForeground(Color.white);
+        tab = new JLabel("     --:--     ");
+        tab.setForeground(Color.green);
+        tab.setFont(new Font(" ",Font.CENTER_BASELINE,15));
 
         sidebar.add(score1);
+        sidebar.add(tab);
         sidebar.add(score2);
 
-        sidebar.add(new JLabel("-----------"));
 
-        sidebar.add(tscore1);
-        sidebar.add(tscore2);
-
-
-        this.add(sidebar,BorderLayout.WEST);
+        this.add(sidebar,BorderLayout.NORTH);
         this.add(reversiBoard);
 
         //
         updateBoardInfo();
-        updateTotalScore();
+        //updateTotalScore();
 
         //AI Handler Timer (to unfreeze gui)
         player1HandlerTimer = new Timer(1000,(ActionEvent e) -> {
@@ -142,10 +137,15 @@ public class GamePanel extends JPanel implements GameEngine {
         }else{
             //game finished
             System.out.println("Game Finished !");
+
             int winner = BoardHelper.getWinner(board);
-            if(winner==1) totalscore1++;
-            else if(winner==2) totalscore2++;
-            updateTotalScore();
+            //JOptionPane.setDefaultLocale();
+            if(winner==1)
+                JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+            else if(winner==2)
+                JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+
+            //updateTotalScore();
             //restart
             //resetBoard();
             //turn=1;
@@ -169,9 +169,8 @@ public class GamePanel extends JPanel implements GameEngine {
 
     //update highlights on possible moves and scores
     public void updateBoardInfo(){
-
-        int p1score = 0;
-        int p2score = 0;
+         p1score = 0;
+         p2score = 0;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -185,15 +184,28 @@ public class GamePanel extends JPanel implements GameEngine {
                 }
             }
         }
+        if(turn==1){
+            score1.setOpaque(true);
+            score1.setBackground(Color.lightGray);
+            score2.setOpaque(true);
+            score2.setBackground(new Color(110,150,230));
+        }
+        else{
+            score2.setOpaque(true);
+            score2.setBackground(Color.lightGray);
+            score1.setOpaque(true);
+            score1.setBackground(new Color(110,150,230));
+        }
 
-        score1.setText(player1.playerName() + " : " + p1score);
-        score2.setText(player2.playerName() + " : " + p2score);
+        score1.setText("  YOU : " + p1score+"  ");
+        score2.setText("  "+p2score+" : CPU  ");
+       // score2.setText(player2.playerName() + " : " + p2score);
     }
 
-    public void updateTotalScore(){
-        tscore1.setText(player1.playerName() + " : " + totalscore1);
-        tscore2.setText(player2.playerName() + " : " + totalscore2);
-    }
+//    public void updateTotalScore(){
+//        tscore1.setText(player1.playerName() + " : " + totalscore1);
+//        tscore2.setText(player2.playerName() + " : " + totalscore2);
+//    }
 
     @Override
     public void handleClick(int i,int j){
