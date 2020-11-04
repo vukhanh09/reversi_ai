@@ -7,6 +7,8 @@ import java.awt.*;
 public class  HumanPlayer extends GamePlayer {
 
     public HumanPlayer(int mark) {
+
+
         super(mark);
     }
 
@@ -24,5 +26,6 @@ public class  HumanPlayer extends GamePlayer {
     public Point play(int[][] board) {
         return null;
     }
+    
 
 }
