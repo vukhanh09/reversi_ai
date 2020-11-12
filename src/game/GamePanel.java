@@ -29,18 +29,11 @@ public class GamePanel extends JPanel implements GameEngine {
     int p2score = 0;
 
 
-
-<<<<<<< HEAD
     GamePlayer player1 = new HumanPlayer();
     GamePlayer player2;
     Timer player1HandlerTimer = null;
     Timer player2HandlerTimer = null;
-=======
-    GamePlayer player1 = new AIPlayerRealtime(1,6);
-    GamePlayer player2 = new Ai2(2,6);
-    Timer player1HandlerTimer;
-    Timer player2HandlerTimer;
->>>>>>> f47b20a9ae1b47a14ec94ba8cb3fa66a315d2dd3
+
 
     @Override
     public int getBoardValue(int i,int j){
@@ -53,7 +46,7 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     public GamePanel(){
-        player2 = new AIPlayerRealtime(2,1);
+        player2 = new AIPlayerRealtime(2,2);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         JPanel reversiBoard = new JPanel();
@@ -231,7 +224,6 @@ public class GamePanel extends JPanel implements GameEngine {
 
             undo[temp] = board;
             temp++;
-            System.out.println(temp);
 
             //update board
             board = BoardHelper.getNewBoardAfterMove(board,new Point(i,j),turn);
@@ -282,9 +274,7 @@ public class GamePanel extends JPanel implements GameEngine {
             board = undo[temp];
             updateBoardInfo();
             repaint();
-            System.out.println(temp);
         }
-
     }
 
 }
