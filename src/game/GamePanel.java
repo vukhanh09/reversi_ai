@@ -11,27 +11,29 @@ import java.awt.event.ActionEvent;
 public class GamePanel extends JPanel implements GameEngine {
 
     //reversi board
-    int[][] board;
+    int[][] board = null;
+    int[][][] undo = new int[30][8][8];
+    int temp = 0;
 
     //player turn
     //black plays first
     int turn = 1;
 
     //swing elements
-    BoardCell[][] cells;
-    JLabel score1;
-    JLabel tab;
-    JLabel score2;
+    BoardCell[][] cells = null;
+    JLabel score1 = null;
+    JLabel tab = null;
+    JLabel score2 = null;
 
     int p1score = 0;
     int p2score = 0;
 
 
 
-    GamePlayer player1 = new Ai2(1,6);
-    GamePlayer player2 = new AIPlayerRealtime(2,6);
-    Timer player1HandlerTimer;
-    Timer player2HandlerTimer;
+    GamePlayer player1 = new HumanPlayer();
+    GamePlayer player2;
+    Timer player1HandlerTimer = null;
+    Timer player2HandlerTimer = null;
 
     @Override
     public int getBoardValue(int i,int j){
@@ -44,6 +46,7 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     public GamePanel(){
+        player2 = new AIPlayerRealtime(2,1);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         JPanel reversiBoard = new JPanel();
@@ -168,6 +171,7 @@ public class GamePanel extends JPanel implements GameEngine {
         setBoardValue(3,4,1);
         setBoardValue(4,3,1);
         setBoardValue(4,4,2);
+        undo[0] = board;
     }
 
     //update highlights on possible moves and scores
@@ -181,7 +185,10 @@ public class GamePanel extends JPanel implements GameEngine {
                 if(board[i][j] == 2) p2score++;
 
                 if(BoardHelper.canPlay(board,turn,i,j)){
-                    cells[i][j].highlight = 1;
+                    if(turn==1)
+                        cells[i][j].highlight = 1;
+                    else
+                        cells[i][j].highlight = 2;
                 }else{
                     cells[i][j].highlight = 0;
                 }
@@ -215,8 +222,13 @@ public class GamePanel extends JPanel implements GameEngine {
         if(awaitForClick && BoardHelper.canPlay(board,turn,i,j)){
             System.out.println("User Played in : "+ i + " , " + j);
 
+            undo[temp] = board;
+            temp++;
+            System.out.println(temp);
+
             //update board
             board = BoardHelper.getNewBoardAfterMove(board,new Point(i,j),turn);
+
 
             //advance turn
             turn = (turn == 1) ? 2 : 1;
@@ -240,10 +252,32 @@ public class GamePanel extends JPanel implements GameEngine {
         //update board
         board = BoardHelper.getNewBoardAfterMove(board,aiPlayPoint,turn);
 
+
+
+
         //advance turn
         turn = (turn == 1) ? 2 : 1;
 
         repaint();
+    }
+
+    public void setLevel(int lv){
+        player2.setSearchDepth(lv);
+    }
+
+    public void setAI(GamePlayer ai){
+        this.player2 = ai;
+    }
+
+    public void Undo(){
+        if(turn == 1 && temp>0){
+            temp--;
+            board = undo[temp];
+            updateBoardInfo();
+            repaint();
+            System.out.println(temp);
+        }
+
     }
 
 }

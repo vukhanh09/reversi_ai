@@ -9,6 +9,10 @@ public class Ai2 extends GamePlayer {
     private int searchDepth;
     private Evaluator evaluator;
 
+    public void setSearchDepth(int depth){
+        this.searchDepth = depth;
+    }
+
     public Ai2(int mark, int depth) {
         super(mark);
         searchDepth = depth;

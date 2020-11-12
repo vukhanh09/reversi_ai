@@ -8,8 +8,11 @@ public class  HumanPlayer extends GamePlayer {
 
     public HumanPlayer(int mark) {
 
-
         super(mark);
+    }
+
+    public HumanPlayer(){
+
     }
 
     @Override
@@ -26,6 +29,9 @@ public class  HumanPlayer extends GamePlayer {
     public Point play(int[][] board) {
         return null;
     }
-    
 
+    @Override
+    public void setSearchDepth(int depth) {
+
+    }
 }

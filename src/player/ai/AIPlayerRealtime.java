@@ -9,6 +9,10 @@ public class AIPlayerRealtime extends GamePlayer {
     private int searchDepth;
     private Evaluator evaluator;
 
+    public void setSearchDepth(int depth){
+        this.searchDepth = depth;
+    }
+
     public AIPlayerRealtime(int mark, int depth) {
         super(mark);
         searchDepth = depth;

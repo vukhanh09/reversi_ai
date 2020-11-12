@@ -34,18 +34,19 @@ public class BoardCell extends JLabel implements MouseListener{
         int margin_top = this.getHeight() / 10;
 
         //draw highlight
+        //if(value == 1)
         if(highlight == 1) {
-            g.setColor(new Color(138, 177, 62));
+            g.setColor(Color.GREEN);
             g.fillRect(0,0,this.getWidth(),this.getHeight());
             g.setColor(parent.getBackground());
             g.fillRect(4,4,this.getWidth()-8,this.getHeight()-8);
         }else if(highlight == 2){
-            g.setColor(new Color(177, 158, 70));
+            g.setColor(Color.RED);
             g.fillRect(0,0,this.getWidth(),this.getHeight());
             g.setColor(parent.getBackground());
             g.fillRect(4,4,this.getWidth()-8,this.getHeight()-8);
         }else if(highlight == 10){
-            g.setColor(new Color(177, 43, 71));
+            g.setColor(new Color(17, 43, 71));
             g.fillRect(0,0,this.getWidth(),this.getHeight());
         }
 
@@ -56,10 +57,13 @@ public class BoardCell extends JLabel implements MouseListener{
         //draw piece
         int value = ge.getBoardValue(i,j);
         if(value == 1){
+
             g.setColor(Color.BLACK);
             g.fillOval(margin_left,margin_top,this.getWidth()-2*margin_left,this.getHeight()-2*margin_top);
+
         }
         else if(value == 2) {
+
             g.setColor(Color.WHITE);
             g.fillOval(margin_left,margin_top,this.getWidth()-2*margin_left,this.getHeight()-2*margin_top);
         }

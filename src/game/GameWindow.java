@@ -1,39 +1,96 @@
 package game;
 
+import player.ai.AIPlayerRealtime;
+import player.ai.Ai2;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class GameWindow extends JFrame {
 
+    public GamePanel gp = new GamePanel();
+    public GamePlayer ai ;
+
     public GameWindow(){
-        GamePanel gp = new GamePanel();
+
         this.add(gp);
 
         //this.setSize(500,500);
         // set menu
         JMenuBar menuBar = new JMenuBar(); // Tao cac menu
         JMenu levelMenu = new JMenu("Level");
-        JMenu undo = new JMenu("Undo");
-        JMenu reset = new JMenu("Reset");
+        JMenuItem undo = new JMenuItem("Undo");
+        undo.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                Undo(evt);
+            }
+        });
+        JMenuItem reset = new JMenuItem("Reset");
+        reset.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                Reset(evt);
+            }
+        });
+
         JMenu ai = new JMenu("Choose AI");
         JMenuItem minimax = new JMenuItem("MiniMax");
+        minimax.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setMiniMax(evt);
+            }
+        });
         JMenuItem alphaBeta = new JMenuItem("Alpha - Beta");
+        alphaBeta.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setAlphaBeta(evt);
+            }
+        });
         ai.add(minimax);
         ai.add(alphaBeta);
 
         // tao cac item
         JMenuItem level1 = new JMenuItem("Level 1");
-        //newMenuItem.setActionCommand("New");
+        level1.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV1(evt);
+            }
+        });
+
         JMenuItem level2 = new JMenuItem("Level 2");
-        //openMenuItem.setActionCommand("Open");
+        level2.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV2(evt);
+            }
+        });
+
         JMenuItem level3 = new JMenuItem("Level 3");
-        //saveMenuItem.setActionCommand("Save");
+        level3.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV3(evt);
+            }
+        });
+
         JMenuItem level4 = new JMenuItem("Level 4");
-        //exitMenuItem.setActionCommand("Exit");
+        level4.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV4(evt);
+            }
+        });
+
         JMenuItem level5 = new JMenuItem("Level 5");
-        //cutMenuItem.setActionCommand("Cut");
+        level5.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV5(evt);
+            }
+        });
+
         JMenuItem level6 = new JMenuItem("Level 6");
-        //copyMenuItem.setActionCommand("Copy");
+        level6.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                setLV6(evt);
+            }
+        });
+
         levelMenu.add(level1);
         levelMenu.add(level2);
         levelMenu.add(level3);
@@ -44,6 +101,11 @@ public class GameWindow extends JFrame {
         menuBar.add(levelMenu);
         menuBar.add(undo);
         menuBar.add(reset);
+        menuBar.add(new JMenuItem());
+        menuBar.add(new JMenuItem());
+        menuBar.add(new JMenuItem());
+        menuBar.add(new JMenuItem());
+        menuBar.add(new JMenuItem());
         this.setJMenuBar(menuBar);
 
         this.setTitle("Reversi");
@@ -53,6 +115,65 @@ public class GameWindow extends JFrame {
         this.setVisible(true);
 
     }
+
+    private void setLV1 (java.awt.event.ActionEvent evt){
+        gp.setLevel(2);
+    }
+    private void setLV2 (java.awt.event.ActionEvent evt){
+        gp.setLevel(3);
+    }
+    private void setLV3 (java.awt.event.ActionEvent evt){
+        gp.setLevel(4);
+    }
+    private void setLV4 (java.awt.event.ActionEvent evt){
+        gp.setLevel(5);
+    }
+    private void setLV5 (java.awt.event.ActionEvent evt){
+        gp.setLevel(6);
+    }
+    private void setLV6 (java.awt.event.ActionEvent evt){
+        gp.setLevel(7);
+    }
+
+    private void Undo (java.awt.event.ActionEvent evt){
+        gp.Undo();
+    }
+
+    private void Reset (java.awt.event.ActionEvent evt){
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+
+        if(choose==0){
+            remove(gp);
+            gp = new GamePanel();
+            this.add(gp);
+            paintAll(this.getGraphics());
+            System.out.println("Restart");
+        }
+
+    }
+    private void setMiniMax (java.awt.event.ActionEvent evt){
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            remove(gp);
+            gp = new GamePanel();
+            this.ai = new Ai2(2,1);
+            gp.setAI(this.ai);
+            this.add(gp);
+            paintAll(this.getGraphics());
+        }
+    }
+    private void setAlphaBeta (java.awt.event.ActionEvent evt){
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            remove(gp);
+            gp = new GamePanel();
+            this.ai = new AIPlayerRealtime(2,1);
+            gp.setAI(this.ai);
+            this.add(gp);
+            paintAll(this.getGraphics());
+        }
+    }
+
 
     public static void main(String[] args) {
 
