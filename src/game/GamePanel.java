@@ -1,6 +1,7 @@
 package game;
 
 import player.HumanPlayer;
+import player.RandomPlayer;
 import player.ai.AIPlayer;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel implements GameEngine {
 
 
 
-    GamePlayer player1 = new HumanPlayer(1);
+    GamePlayer player1 = new RandomPlayer(1);
     GamePlayer player2 = null;
     Timer player1HandlerTimer;
     Timer player2HandlerTimer;
@@ -46,7 +47,7 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     public GamePanel(){
-        player2 = new AIPlayer(2,1,false);
+        player2 = new AIPlayer(2,5,true);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         JPanel reversiBoard = new JPanel();
