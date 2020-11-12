@@ -30,10 +30,17 @@ public class GamePanel extends JPanel implements GameEngine {
 
 
 
+<<<<<<< HEAD
     GamePlayer player1 = new HumanPlayer();
     GamePlayer player2;
     Timer player1HandlerTimer = null;
     Timer player2HandlerTimer = null;
+=======
+    GamePlayer player1 = new AIPlayerRealtime(1,6);
+    GamePlayer player2 = new Ai2(2,6);
+    Timer player1HandlerTimer;
+    Timer player2HandlerTimer;
+>>>>>>> f47b20a9ae1b47a14ec94ba8cb3fa66a315d2dd3
 
     @Override
     public int getBoardValue(int i,int j){
