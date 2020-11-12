@@ -12,7 +12,6 @@ public class MinimaxPruning {
         int bestScore = Integer.MIN_VALUE;
         for(Point move : BoardHelper.getAllPossibleMoves(board, player)){
             int[][] newBord = BoardHelper.getNewBoardAfterMove(board,move,player);
-            /*int childScore = MaxMin(newBord,player,depth-1,e, Integer.MIN_VALUE, Integer.MAX_VALUE,false);*/
             int childScore = MinValue(newBord,player,depth-1,e,Integer.MIN_VALUE, Integer.MAX_VALUE);
             if(childScore>bestScore){
                 bestScore = childScore;

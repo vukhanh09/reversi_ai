@@ -4,19 +4,29 @@ import game.GamePlayer;
 
 import java.awt.*;
 
-public class AIPlayerRealtime extends GamePlayer {
+public class AIPlayer extends GamePlayer {
 
     private int searchDepth;
     private Evaluator evaluator;
+    private boolean option;
+
+
+    public boolean isOption() {
+        return option;
+    }
+
+    public void setOption(boolean option) {
+        this.option = option;
+    }
 
     public void setSearchDepth(int depth){
         this.searchDepth = depth;
     }
 
-    public AIPlayerRealtime(int mark, int depth) {
+    public AIPlayer(int mark, int depth,boolean option) {
         super(mark);
         searchDepth = depth;
-
+        this.option = option;
         if(mark==1) {
             evaluator = new RealtimeEvaluator(new int[][] {
                     {8, 85, -40, 10, 210, 520},
@@ -53,11 +63,19 @@ public class AIPlayerRealtime extends GamePlayer {
 
     @Override
     public String playerName() {
-        return "Realtime AI (Depth " + searchDepth + ")";
+        if(option){
+            return "AI Pruning (Depth " + searchDepth + ")";
+        }
+        else
+            return "AI (Depth " + searchDepth + ")";
     }
 
     @Override
     public Point play(int[][] board) {
-        return MinimaxPruning.solve(board,myMark,searchDepth,evaluator);
+        if(option){
+            return MinimaxPruning.solve(board,myMark,searchDepth,evaluator);
+        }
+        else
+            return Minimax.solve(board,myMark,searchDepth,evaluator);
     }
 }

@@ -1,10 +1,8 @@
 package game;
 
-import player.ai.AIPlayerRealtime;
-import player.ai.Ai2;
+import player.ai.AIPlayer;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameWindow extends JFrame {
 
@@ -156,7 +154,7 @@ public class GameWindow extends JFrame {
         if(choose == 0){
             remove(gp);
             gp = new GamePanel();
-            this.ai = new Ai2(2,1);
+            this.ai = new AIPlayer(2,5,false);
             gp.setAI(this.ai);
             this.add(gp);
             paintAll(this.getGraphics());
@@ -167,7 +165,7 @@ public class GameWindow extends JFrame {
         if(choose == 0){
             remove(gp);
             gp = new GamePanel();
-            this.ai = new AIPlayerRealtime(2,1);
+            this.ai = new AIPlayer(2,5,true);
             gp.setAI(this.ai);
             this.add(gp);
             paintAll(this.getGraphics());

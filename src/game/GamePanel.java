@@ -1,8 +1,7 @@
 package game;
 
-import player.*;
-import player.ai.AIPlayerRealtime;
-import player.ai.Ai2;
+import player.HumanPlayer;
+import player.ai.AIPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,10 +28,11 @@ public class GamePanel extends JPanel implements GameEngine {
     int p2score = 0;
 
 
-    GamePlayer player1 = new HumanPlayer();
-    GamePlayer player2;
-    Timer player1HandlerTimer = null;
-    Timer player2HandlerTimer = null;
+
+    GamePlayer player1 = new HumanPlayer(1);
+    GamePlayer player2 = null;
+    Timer player1HandlerTimer;
+    Timer player2HandlerTimer;
 
 
     @Override
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     public GamePanel(){
-        player2 = new AIPlayerRealtime(2,2);
+        player2 = new AIPlayer(2,1,false);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         JPanel reversiBoard = new JPanel();

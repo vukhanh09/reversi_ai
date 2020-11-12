@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import static game.BoardHelper.getAllPossibleMoves;
 
 public class RealtimeEvaluator implements Evaluator {
-
-    //public static final int WEIGHT_SET_SIZE = 6;
     int[][] weightSetForDiscCount;
 
 
@@ -43,8 +41,6 @@ public class RealtimeEvaluator implements Evaluator {
 
     public RealtimeEvaluator(int[][] weightSet , int[] timingSet){
         weightSetForDiscCount = new int[65][weightSet[0].length];
-
-        //dc : Disk Count
         for(int dc = 0; dc <= 64; dc++) {
             // determine which set of weights to use
             int w = 0;
@@ -55,7 +51,6 @@ public class RealtimeEvaluator implements Evaluator {
                 }
             }
 
-            // first set of weights: just return them
             if(w == 0) {
                 weightSetForDiscCount[dc] = weightSet[0];
                 continue;
