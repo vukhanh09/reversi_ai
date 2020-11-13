@@ -1,13 +1,14 @@
 package game;
 
 import player.HumanPlayer;
+import player.RandomPlayer;
 import player.ai.AIPlayer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class GamePanel extends JPanel implements GameEngine,Runnable {
+public class GamePanel extends JPanel implements GameEngine {
 
     //reversi board
     int[][] board = null;
@@ -28,8 +29,6 @@ public class GamePanel extends JPanel implements GameEngine,Runnable {
     int p1score = 0;
     int p2score = 0;
 
-    Thread control = null;
-
     GamePlayer player1 = new HumanPlayer(1);
     GamePlayer player2 = null;
     Timer player1HandlerTimer;
@@ -47,6 +46,7 @@ public class GamePanel extends JPanel implements GameEngine,Runnable {
     }
 
     public GamePanel(){
+
         if(CvsC){
             this.player1 = new AIPlayer(1,5,true);//Alpha - Beta
             this.player2 = new AIPlayer(2,5,false);//MiniMax
@@ -98,8 +98,21 @@ public class GamePanel extends JPanel implements GameEngine,Runnable {
         updateBoardInfo();
         //updateTotalScore();
 
-        control = new Thread(this);
-        control.start();
+        //AI Handler Timer (to unfreeze gui)
+        player1HandlerTimer = new Timer(10,(ActionEvent e) -> {
+            handleAI(player1);
+            player1HandlerTimer.stop();
+            manageTurn();
+        });
+
+        player2HandlerTimer = new Timer(10,(ActionEvent e) -> {
+            handleAI(player2);
+            player2HandlerTimer.stop();
+            manageTurn();
+        });
+
+        manageTurn();
+
     }
 
     private boolean awaitForClick = false;
@@ -144,7 +157,7 @@ public class GamePanel extends JPanel implements GameEngine,Runnable {
             //JOptionPane.setDefaultLocale();
             if(CvsC){
                 if(winner==1)
-                    JOptionPane.showMessageDialog(null,"                             Alpha-Beta WIN","Reversi",JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"                           Alpha-Beta WIN","Reversi",JOptionPane.PLAIN_MESSAGE);
                 else if(winner==2)
                     JOptionPane.showMessageDialog(null,"                            MiniMax WIN","Reversi",JOptionPane.PLAIN_MESSAGE);
 
@@ -317,22 +330,4 @@ public class GamePanel extends JPanel implements GameEngine,Runnable {
         System.out.println("gc");
     }
 
-    @Override
-    public void run() {
-        //AI Handler Timer (to unfreeze gui)
-        player1HandlerTimer = new Timer(10,(ActionEvent e) -> {
-            handleAI(player1);
-            player1HandlerTimer.stop();
-            manageTurn();
-        });
-
-        player2HandlerTimer = new Timer(10,(ActionEvent e) -> {
-            handleAI(player2);
-            player2HandlerTimer.stop();
-            manageTurn();
-        });
-
-        manageTurn();
-
-    }
 }
