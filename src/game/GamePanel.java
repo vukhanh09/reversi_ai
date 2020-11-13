@@ -7,13 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class GamePanel extends JPanel implements GameEngine {
+public class GamePanel extends JPanel implements GameEngine,Runnable {
 
     //reversi board
     int[][] board = null;
     int[][][] undo = new int[30][8][8];
     int temp = 0;
 
+    public static boolean CvsC = false;
     //player turn
     //black plays first
     int turn = 1;
@@ -27,7 +28,7 @@ public class GamePanel extends JPanel implements GameEngine {
     int p1score = 0;
     int p2score = 0;
 
-
+    Thread control = null;
 
     GamePlayer player1 = new HumanPlayer(1);
     GamePlayer player2 = null;
@@ -46,7 +47,14 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     public GamePanel(){
-        player2 = new AIPlayer(2,1,false);
+        if(CvsC){
+            this.player1 = new AIPlayer(1,5,true);//Alpha - Beta
+            this.player2 = new AIPlayer(2,5,false);//MiniMax
+        }
+        else{
+            player2 = new AIPlayer(2,1,true);
+        }
+
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         JPanel reversiBoard = new JPanel();
@@ -90,20 +98,8 @@ public class GamePanel extends JPanel implements GameEngine {
         updateBoardInfo();
         //updateTotalScore();
 
-        //AI Handler Timer (to unfreeze gui)
-        player1HandlerTimer = new Timer(1000,(ActionEvent e) -> {
-            handleAI(player1);
-            player1HandlerTimer.stop();
-            manageTurn();
-        });
-
-        player2HandlerTimer = new Timer(1000,(ActionEvent e) -> {
-            handleAI(player2);
-            player2HandlerTimer.stop();
-            manageTurn();
-        });
-
-        manageTurn();
+        control = new Thread(this);
+        control.start();
     }
 
     private boolean awaitForClick = false;
@@ -146,11 +142,20 @@ public class GamePanel extends JPanel implements GameEngine {
 
             int winner = BoardHelper.getWinner(board);
             //JOptionPane.setDefaultLocale();
-            if(winner==1)
-                JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
-            else if(winner==2)
-                JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+            if(CvsC){
+                if(winner==1)
+                    JOptionPane.showMessageDialog(null,"                             Alpha-Beta WIN","Reversi",JOptionPane.PLAIN_MESSAGE);
+                else if(winner==2)
+                    JOptionPane.showMessageDialog(null,"                            MiniMax WIN","Reversi",JOptionPane.PLAIN_MESSAGE);
 
+            }
+            else{
+                if(winner==1)
+                    JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+                else if(winner==2)
+                    JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+
+            }
             //updateTotalScore();
             //restart
             //resetBoard();
@@ -207,8 +212,15 @@ public class GamePanel extends JPanel implements GameEngine {
             score1.setBackground(new Color(110,150,230));
         }
 
-        score1.setText("  YOU : " + p1score+"  ");
-        score2.setText("  "+p2score+" : CPU  ");
+        if(CvsC){
+            score1.setText("  Alpha-Beta : " + p1score+"  ");
+            score2.setText("  "+p2score+" : MiniMax  ");
+        }
+        else{
+            score1.setText("  YOU : " + p1score+"  ");
+            score2.setText("  "+p2score+" : CPU  ");
+        }
+
        // score2.setText(player2.playerName() + " : " + p2score);
     }
 
@@ -243,30 +255,42 @@ public class GamePanel extends JPanel implements GameEngine {
 
     public void handleAI(GamePlayer ai){
         Point aiPlayPoint = ai.play(board);
-        int i = aiPlayPoint.x;
-        int j = aiPlayPoint.y;
-        if(!BoardHelper.canPlay(board,ai.myMark,i,j)) System.err.println("FATAL : AI Invalid Move !");
-        System.out.println(ai.playerName() + " Played in : "+ i + " , " + j);
+        try{
+            int i = aiPlayPoint.x;
+            int j = aiPlayPoint.y;
+            if(!BoardHelper.canPlay(board,ai.myMark,i,j)) System.err.println("FATAL : AI Invalid Move !");
+            System.out.println(ai.playerName() + " Played in : "+ i + " , " + j);
+            //update board
+            board = BoardHelper.getNewBoardAfterMove(board,aiPlayPoint,turn);
+            //advance turn
+            turn = (turn == 1) ? 2 : 1;
+        }
+        catch (Exception e){
+            System.out.println("...");
+        }
 
-        //update board
-        board = BoardHelper.getNewBoardAfterMove(board,aiPlayPoint,turn);
-
-
-
-
-        //advance turn
-        turn = (turn == 1) ? 2 : 1;
 
         repaint();
     }
 
     public void setLevel(int lv){
-        player2.setSearchDepth(lv);
+        if(CvsC){
+            player1.setSearchDepth(lv);
+            player2.setSearchDepth(lv);
+        }
+        else{
+            player2.setSearchDepth(lv);
+        }
+
     }
 
     public void setAI(GamePlayer ai){
         this.player2 = ai;
     }
+
+//    public void setCpu(){
+//
+//    }
 
     public void Undo(){
         if(turn == 1 && temp>0){
@@ -277,4 +301,38 @@ public class GamePanel extends JPanel implements GameEngine {
         }
     }
 
+    public void reset(){
+        resetBoard();
+        updateBoardInfo();
+        if(!CvsC){
+            player1 = new HumanPlayer();
+            player2 = null;
+        }
+        turn = 1;
+        temp = 0;
+        repaint();
+    }
+
+    public void finalize(){
+        System.out.println("gc");
+    }
+
+    @Override
+    public void run() {
+        //AI Handler Timer (to unfreeze gui)
+        player1HandlerTimer = new Timer(10,(ActionEvent e) -> {
+            handleAI(player1);
+            player1HandlerTimer.stop();
+            manageTurn();
+        });
+
+        player2HandlerTimer = new Timer(10,(ActionEvent e) -> {
+            handleAI(player2);
+            player2HandlerTimer.stop();
+            manageTurn();
+        });
+
+        manageTurn();
+
+    }
 }

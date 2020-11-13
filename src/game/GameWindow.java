@@ -4,7 +4,7 @@ import player.ai.AIPlayer;
 
 import javax.swing.*;
 
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame{
 
     public GamePanel gp = new GamePanel();
     public GamePlayer ai ;
@@ -27,6 +27,13 @@ public class GameWindow extends JFrame {
         reset.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt){
                 Reset(evt);
+            }
+        });
+
+        JMenuItem setCpu = new JMenuItem("CPU vs CPU");
+        setCpu.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                CPU(evt);
             }
         });
 
@@ -99,9 +106,7 @@ public class GameWindow extends JFrame {
         menuBar.add(levelMenu);
         menuBar.add(undo);
         menuBar.add(reset);
-        menuBar.add(new JMenuItem());
-        menuBar.add(new JMenuItem());
-        menuBar.add(new JMenuItem());
+        menuBar.add(setCpu);
         menuBar.add(new JMenuItem());
         menuBar.add(new JMenuItem());
         this.setJMenuBar(menuBar);
@@ -115,22 +120,46 @@ public class GameWindow extends JFrame {
     }
 
     private void setLV1 (java.awt.event.ActionEvent evt){
-        gp.setLevel(2);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(1);
+        }
     }
     private void setLV2 (java.awt.event.ActionEvent evt){
-        gp.setLevel(3);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(2);
+        }
     }
     private void setLV3 (java.awt.event.ActionEvent evt){
-        gp.setLevel(4);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(3);
+        }
     }
     private void setLV4 (java.awt.event.ActionEvent evt){
-        gp.setLevel(5);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(4);
+        }
     }
     private void setLV5 (java.awt.event.ActionEvent evt){
-        gp.setLevel(6);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(5);
+        }
     }
     private void setLV6 (java.awt.event.ActionEvent evt){
-        gp.setLevel(7);
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            gp.reset();
+            gp.setLevel(6);
+        }
     }
 
     private void Undo (java.awt.event.ActionEvent evt){
@@ -141,6 +170,7 @@ public class GameWindow extends JFrame {
         int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
 
         if(choose==0){
+            GamePanel.CvsC = false;
             remove(gp);
             gp = new GamePanel();
             this.add(gp);
@@ -149,26 +179,33 @@ public class GameWindow extends JFrame {
         }
 
     }
+    private void CPU (java.awt.event.ActionEvent evt){
+        int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
+        if(choose == 0){
+            GamePanel.CvsC = true;
+            remove(gp);
+            gp = new GamePanel();
+            this.add(gp);
+            paintAll(this.getGraphics());
+        }
+    }
     private void setMiniMax (java.awt.event.ActionEvent evt){
         int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
         if(choose == 0){
-            remove(gp);
-            gp = new GamePanel();
+            GamePanel.CvsC = false;
+            gp.reset();
             this.ai = new AIPlayer(2,5,false);
             gp.setAI(this.ai);
-            this.add(gp);
-            paintAll(this.getGraphics());
+
         }
     }
     private void setAlphaBeta (java.awt.event.ActionEvent evt){
         int choose = JOptionPane.showConfirmDialog(null, "Restart game?", "Reversi", JOptionPane.YES_NO_OPTION);
         if(choose == 0){
-            remove(gp);
-            gp = new GamePanel();
+            GamePanel.CvsC = false;
+            gp.reset();
             this.ai = new AIPlayer(2,5,true);
             gp.setAI(this.ai);
-            this.add(gp);
-            paintAll(this.getGraphics());
         }
     }
 
