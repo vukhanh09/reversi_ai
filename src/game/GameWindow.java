@@ -17,6 +17,7 @@ public class GameWindow extends JFrame{
         // set menu
         JMenuBar menuBar = new JMenuBar(); // Tao cac menu
         JMenu levelMenu = new JMenu("Level");
+        JMenu m = new JMenu("...");
         JMenuItem undo = new JMenuItem("Undo");
         undo.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt){
@@ -30,7 +31,7 @@ public class GameWindow extends JFrame{
             }
         });
 
-        JMenuItem setCpu = new JMenuItem("CPU vs CPU");
+        JMenuItem setCpu = new JMenuItem("Alpha-Beta vs MiniMax");
         setCpu.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt){
                 CPU(evt);
@@ -104,11 +105,11 @@ public class GameWindow extends JFrame{
         levelMenu.add(level6);
         menuBar.add(ai);
         menuBar.add(levelMenu);
-        menuBar.add(undo);
-        menuBar.add(reset);
-        menuBar.add(setCpu);
-        menuBar.add(new JMenuItem());
-        menuBar.add(new JMenuItem());
+        m.add(setCpu);
+        m.add(undo);
+        m.add(reset);
+        menuBar.add(m);
+
         this.setJMenuBar(menuBar);
 
         this.setTitle("Reversi");

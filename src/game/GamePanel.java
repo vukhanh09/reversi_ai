@@ -99,13 +99,13 @@ public class GamePanel extends JPanel implements GameEngine {
         //updateTotalScore();
 
         //AI Handler Timer (to unfreeze gui)
-        player1HandlerTimer = new Timer(10,(ActionEvent e) -> {
+        player1HandlerTimer = new Timer(100,(ActionEvent e) -> {
             handleAI(player1);
             player1HandlerTimer.stop();
             manageTurn();
         });
 
-        player2HandlerTimer = new Timer(10,(ActionEvent e) -> {
+        player2HandlerTimer = new Timer(100,(ActionEvent e) -> {
             handleAI(player2);
             player2HandlerTimer.stop();
             manageTurn();
@@ -168,6 +168,20 @@ public class GamePanel extends JPanel implements GameEngine {
                 else if(winner==2)
                     JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
 
+                reset();
+                player1HandlerTimer = new Timer(100,(ActionEvent e) -> {
+                    handleAI(player1);
+                    player1HandlerTimer.stop();
+                    manageTurn();
+                });
+
+                player2HandlerTimer = new Timer(100,(ActionEvent e) -> {
+                    handleAI(player2);
+                    player2HandlerTimer.stop();
+                    manageTurn();
+                });
+
+                manageTurn();
             }
             //updateTotalScore();
             //restart
@@ -319,7 +333,6 @@ public class GamePanel extends JPanel implements GameEngine {
         updateBoardInfo();
         if(!CvsC){
             player1 = new HumanPlayer();
-            player2 = null;
         }
         turn = 1;
         temp = 0;
