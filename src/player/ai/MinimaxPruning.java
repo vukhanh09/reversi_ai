@@ -5,8 +5,9 @@ import game.BoardHelper;
 import java.awt.*;
 
 public class MinimaxPruning {
+    //public static int sum=0;
     static int nodesExplored = 0;
-    public static Point solve(int[][] board, int player, int depth, Evaluator e){
+    public static Point solve(int[][] board, int player, int depth, Evaluator e, AIPlayer ai){
         nodesExplored = 0;
         Point bestMove = null;
         int bestScore = Integer.MIN_VALUE;
@@ -19,6 +20,7 @@ public class MinimaxPruning {
             }
         }
         System.out.println("Nodes Explored : " + nodesExplored);
+        ai.sum+=nodesExplored;
         return bestMove;
     }
 

@@ -7,10 +7,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Minimax {
-
+    //public static int sum=0;
     static int nodesExplored = 0;
 
-    public static Point solve(int[][] board, int player,int depth,Evaluator e){
+    public static Point solve(int[][] board, int player,int depth,Evaluator e, AIPlayer ai){
         nodesExplored = 0;
         int bestScore = Integer.MIN_VALUE;
         Point bestMove = null;
@@ -25,6 +25,7 @@ public class Minimax {
             }
         }
         System.out.println("Nodes Explored : " + nodesExplored);
+        ai.sum+=nodesExplored;
         return bestMove;
     }
 

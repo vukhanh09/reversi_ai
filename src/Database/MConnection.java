@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class MConnection {
 //    private final String DBNAM = "Tutorial";
-    private final String USER = "sa";
-    private final String PASS = "09042000";
+    private final String USER = "admin";
+    private final String PASS = "admin";
     private final String MURL = "jdbc:sqlserver://localhost:1433;databaseName=ThongKe";
 
 

@@ -6,13 +6,14 @@ import java.awt.*;
 
 public class  HumanPlayer extends GamePlayer {
 
-    public HumanPlayer(int mark) {
 
+    public HumanPlayer(int mark) {
         super(mark);
+        this.name="HumanPlayer";
     }
 
     public HumanPlayer(){
-
+        this.name="HumanPlayer";
     }
 
     @Override

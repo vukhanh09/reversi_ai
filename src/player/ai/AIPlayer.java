@@ -5,11 +5,14 @@ import game.GamePlayer;
 import java.awt.*;
 
 public class AIPlayer extends GamePlayer {
-
+    public static int sum=0;
     private int searchDepth;
     private Evaluator evaluator;
     private boolean option;
 
+    public int getSearchDepth() {
+        return searchDepth;
+    }
 
     public boolean isOption() {
         return option;
@@ -25,6 +28,8 @@ public class AIPlayer extends GamePlayer {
 
     public AIPlayer(int mark, int depth,boolean option) {
         super(mark);
+        if(option==false) this.name="Minimax";
+        else this.name="Alpha-Beta";
         searchDepth = depth;
         this.option = option;
         if(mark==1) {
@@ -73,9 +78,9 @@ public class AIPlayer extends GamePlayer {
     @Override
     public Point play(int[][] board) {
         if(option){
-            return MinimaxPruning.solve(board,myMark,searchDepth,evaluator);
+            return MinimaxPruning.solve(board,myMark,searchDepth,evaluator,this);
         }
         else
-            return Minimax.solve(board,myMark,searchDepth,evaluator);
+            return Minimax.solve(board,myMark,searchDepth,evaluator,this);
     }
 }

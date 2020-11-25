@@ -3,7 +3,7 @@ package game;
 import java.awt.*;
 
 public abstract class GamePlayer {
-
+    public String name;
     protected int myMark;
     public GamePlayer(int mark){
         myMark = mark;

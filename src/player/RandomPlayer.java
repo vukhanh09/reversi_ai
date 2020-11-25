@@ -8,8 +8,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RandomPlayer extends GamePlayer {
+
     public RandomPlayer(int mark){
         super(mark);
+        this.name="RandomPlayer";
+    }
+
+    public RandomPlayer(){
+        this.name="RandomPlayer";
     }
 
     @Override

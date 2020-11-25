@@ -1,5 +1,6 @@
 package game;
 
+import Database.ActionDatabase;
 import player.HumanPlayer;
 import player.RandomPlayer;
 import player.ai.AIPlayer;
@@ -7,6 +8,7 @@ import player.ai.AIPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 public class GamePanel extends JPanel implements GameEngine {
 
@@ -151,6 +153,11 @@ public class GamePanel extends JPanel implements GameEngine {
             }
         }else{
             //game finished
+            try {
+                new ActionDatabase().averageNode(player1, player2);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             System.out.println("Game Finished !");
 
             int winner = BoardHelper.getWinner(board);
