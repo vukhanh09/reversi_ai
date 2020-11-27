@@ -23,7 +23,7 @@ public class RealtimeEvaluator implements Evaluator {
             score += weights[1] * frontier(board,player);
         }
         if(weights[2] != 0) {
-            score += weights[2] * pieces(board,player);
+            score += weights[2] * coinParity(board,player);
         }
         if(weights[3] != 0) {
             score += weights[3] * placement(board,player);
@@ -32,7 +32,7 @@ public class RealtimeEvaluator implements Evaluator {
             score += weights[4] * stability(board,player);
         }
         if(weights[5] != 0) {
-            score += weights[5] * cornerGrab(board,player);
+            score += weights[5] * cornerCaptured(board,player);
         }
 
         return score;
@@ -65,13 +65,13 @@ public class RealtimeEvaluator implements Evaluator {
         }
     }
 
-    public static int pieces(int[][] board , int player){
+    public static int coinParity(int[][] board , int player){
         int oplayer = (player==1) ? 2 : 1;
 
-        int mySC = BoardHelper.getPlayerStoneCount(board,player);
-        int opSC = BoardHelper.getPlayerStoneCount(board,oplayer);
+        int myCoin = BoardHelper.getPlayerStoneCount(board,player);
+        int opponentCoin = BoardHelper.getPlayerStoneCount(board,oplayer);
 
-        return 100 * (mySC - opSC) / (mySC + opSC + 1);
+        return 100 * (myCoin - opponentCoin) / (myCoin + opponentCoin + 1);
     }
 
     static int[][] SQUARE_SCORE = {
@@ -124,9 +124,9 @@ public class RealtimeEvaluator implements Evaluator {
         int oplayer = (player==1) ? 2 : 1;
 
         int myMoveCount = getAllPossibleMoves(board,player).size();
-        int opMoveCount = getAllPossibleMoves(board,oplayer).size();
+        int opponentMoveCount = getAllPossibleMoves(board,oplayer).size();
 
-        return 100 * (myMoveCount - opMoveCount) / (myMoveCount + opMoveCount + 1);
+        return 100 * (myMoveCount - opponentMoveCount) / (myMoveCount + opponentMoveCount + 1);
     }
 
     public static int frontier(int[][] board , int player){
@@ -138,18 +138,23 @@ public class RealtimeEvaluator implements Evaluator {
         return 100 * (myF - opF) / (myF + opF + 1);
     }
 
-    public static int cornerGrab(int[][] board , int player){
-        ArrayList<Point> moves = BoardHelper.getAllPossibleMoves(board,player);
+    public static int cornerCaptured(int[][] board , int player){
+        int oplayer = (player==1) ? 2 : 1;
 
-        for(Point m : moves){
-            //if player have corner move return 1
-            if(m.x == 0 && m.y == 0) return 100;
-            if(m.x == 7 && m.y == 0) return 100;
-            if(m.x == 0 && m.y == 7) return 100;
-            if(m.x == 7 && m.y == 7) return 100;
-        }
+        int myCorners = 0;
+        int opCorners = 0;
 
-        return 0;
+        if(board[0][0]==player) myCorners++;
+        if(board[7][0]==player) myCorners++;
+        if(board[0][7]==player) myCorners++;
+        if(board[7][7]==player) myCorners++;
+
+        if(board[0][0]==oplayer) opCorners++;
+        if(board[7][0]==oplayer) opCorners++;
+        if(board[0][7]==oplayer) opCorners++;
+        if(board[7][7]==oplayer) opCorners++;
+
+        return 100 * (myCorners - opCorners) / (myCorners + opCorners + 1);
     }
 
 }
