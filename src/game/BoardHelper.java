@@ -326,8 +326,7 @@ public class BoardHelper {
         ArrayList<Point> stableDiscs = new ArrayList<>();
 
         int mi , mj;
-        int oplayer = ((player == 1) ? 2 : 1);
-
+        
         //move up
         ArrayList<Point> mupts = new ArrayList<>();
         mi = i - 1;
@@ -351,7 +350,7 @@ public class BoardHelper {
         ArrayList<Point> mdpts = new ArrayList<>();
         mi = i + 1;
         mj = j;
-        while(mi<7 && board[mi][mj] == oplayer){
+        while(mi<7 && board[mi][mj] == player){
             mdpts.add(new Point(mi,mj));
             mi++;
         }
@@ -370,7 +369,7 @@ public class BoardHelper {
         ArrayList<Point> mlpts = new ArrayList<>();
         mi = i;
         mj = j - 1;
-        while(mj>0 && board[mi][mj] == oplayer){
+        while(mj>0 && board[mi][mj] == player){
             mlpts.add(new Point(mi,mj));
             mj--;
         }
@@ -389,7 +388,7 @@ public class BoardHelper {
         ArrayList<Point> mrpts = new ArrayList<>();
         mi = i;
         mj = j + 1;
-        while(mj<7 && board[mi][mj] == oplayer){
+        while(mj<7 && board[mi][mj] == player){
             mrpts.add(new Point(mi,mj));
             mj++;
         }
@@ -408,7 +407,7 @@ public class BoardHelper {
         ArrayList<Point> mulpts = new ArrayList<>();
         mi = i - 1;
         mj = j - 1;
-        while(mi>0 && mj>0 && board[mi][mj] == oplayer){
+        while(mi>0 && mj>0 && board[mi][mj] == player){
             mulpts.add(new Point(mi,mj));
             mi--;
             mj--;
@@ -428,7 +427,7 @@ public class BoardHelper {
         ArrayList<Point> murpts = new ArrayList<>();
         mi = i - 1;
         mj = j + 1;
-        while(mi>0 && mj<7 && board[mi][mj] == oplayer){
+        while(mi>0 && mj<7 && board[mi][mj] == player){
             murpts.add(new Point(mi,mj));
             mi--;
             mj++;
@@ -448,7 +447,7 @@ public class BoardHelper {
         ArrayList<Point> mdlpts = new ArrayList<>();
         mi = i + 1;
         mj = j - 1;
-        while(mi<7 && mj>0 && board[mi][mj] == oplayer){
+        while(mi<7 && mj>0 && board[mi][mj] == player){
             mdlpts.add(new Point(mi,mj));
             mi++;
             mj--;
@@ -468,7 +467,7 @@ public class BoardHelper {
         ArrayList<Point> mdrpts = new ArrayList<>();
         mi = i + 1;
         mj = j + 1;
-        while(mi<7 && mj<7 && board[mi][mj] == oplayer){
+        while(mi<7 && mj<7 && board[mi][mj] == player){
             mdrpts.add(new Point(mi,mj));
             mi++;
             mj++;

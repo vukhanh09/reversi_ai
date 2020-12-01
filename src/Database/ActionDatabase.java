@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ActionDatabase {
+
     public void printInfo() throws SQLException {
         var conn = MConnection.getInstance().getConnection();
         var sql= "Select * FROM PruningWinRate";

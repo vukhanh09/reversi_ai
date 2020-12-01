@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements GameEngine {
 
     //reversi board
     int[][] board = null;
-    int[][][] undo = new int[30][8][8];
+    int[][][] undo = new int[60][8][8];
     int temp = 0;
 
     public static boolean CvsC = false;
@@ -155,8 +155,8 @@ public class GamePanel extends JPanel implements GameEngine {
             //game finished
             try {
                 new ActionDatabase().averageNode(player1, player2);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("...");
             }
             System.out.println("Game Finished !");
 
@@ -313,7 +313,7 @@ public class GamePanel extends JPanel implements GameEngine {
             player2.setSearchDepth(lv);
         }
         else{
-            player2.setSearchDepth(lv);
+            player1.setSearchDepth(lv);
         }
 
     }
