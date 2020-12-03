@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements GameEngine {
 
@@ -31,10 +32,26 @@ public class GamePanel extends JPanel implements GameEngine {
     int p1score = 0;
     int p2score = 0;
 
-    GamePlayer player1 = new HumanPlayer(1);
+    GamePlayer player1 = new RandomPlayer(1);
     GamePlayer player2 = null;
     Timer player1HandlerTimer;
     Timer player2HandlerTimer;
+
+    public GamePlayer getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(GamePlayer player1) {
+        this.player1 = player1;
+    }
+
+    public GamePlayer getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(GamePlayer player2) {
+        this.player2 = player2;
+    }
 
 
     @Override
@@ -101,13 +118,13 @@ public class GamePanel extends JPanel implements GameEngine {
         //updateTotalScore();
 
         //AI Handler Timer (to unfreeze gui)
-        player1HandlerTimer = new Timer(100,(ActionEvent e) -> {
+        player1HandlerTimer = new Timer(1000,(ActionEvent e) -> {
             handleAI(player1);
             player1HandlerTimer.stop();
             manageTurn();
         });
 
-        player2HandlerTimer = new Timer(100,(ActionEvent e) -> {
+        player2HandlerTimer = new Timer(1000,(ActionEvent e) -> {
             handleAI(player2);
             player2HandlerTimer.stop();
             manageTurn();
@@ -118,6 +135,35 @@ public class GamePanel extends JPanel implements GameEngine {
     }
 
     private boolean awaitForClick = false;
+    public ArrayList WinRate(){
+        ArrayList a = new ArrayList();
+        String option=null;
+        if(getPlayer1() instanceof HumanPlayer){
+            option = "Human";
+        }
+        else if(getPlayer1() instanceof RandomPlayer){
+            option = "Random";
+        }
+        int level = player2.getSearchDepth();
+        a.add(option);
+        a.add(level);
+        return  a;
+    }
+
+    public void thongKe(int winner) throws SQLException {
+        ArrayList a = WinRate();
+        String name = (String) a.get(0);
+        int level = (int) a.get(1);
+        boolean win;
+        if(winner==2){
+            win=true;
+        }
+        else {
+            win = false;
+        }
+        ActionDatabase database = new ActionDatabase();
+        database.insertWinRate(name,level,win);
+    }
 
     public void manageTurn(){
         if(BoardHelper.hasAnyMoves(board,1) || BoardHelper.hasAnyMoves(board,2)) {
@@ -153,14 +199,19 @@ public class GamePanel extends JPanel implements GameEngine {
             }
         }else{
             //game finished
-            try {
-                new ActionDatabase().averageNode(player1, player2);
+            int winner = BoardHelper.getWinner(board);
+            try{
+                thongKe(winner);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+            /*try {
+                new ActionDatabase().averageNode(player1, player2);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }*/
             System.out.println("Game Finished !");
 
-            int winner = BoardHelper.getWinner(board);
             //JOptionPane.setDefaultLocale();
             if(CvsC){
                 if(winner==1)

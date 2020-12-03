@@ -45,4 +45,9 @@ public class RandomPlayer extends GamePlayer {
     public void setSearchDepth(int depth) {
 
     }
+
+    @Override
+    public int getSearchDepth() {
+        return 0;
+    }
 }

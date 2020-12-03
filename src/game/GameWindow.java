@@ -212,6 +212,11 @@ public class GameWindow extends JFrame{
 
 
     public static void main(String[] args) {
+       /* int max = 10;
+        while(max-->0){
+        new GameWindow();
+        }*/
+
         new GameWindow();
     }
 
