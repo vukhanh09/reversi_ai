@@ -18,4 +18,5 @@ public abstract class GamePlayer {
 
     abstract public void setSearchDepth(int depth);
 
+    abstract public int getSearchDepth();
 }
