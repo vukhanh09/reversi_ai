@@ -153,12 +153,13 @@ public class GamePanel extends JPanel implements GameEngine {
             }
         }else{
             //game finished
-            try {
-                new ActionDatabase().averageNode(player1, player2);
-            } catch (Exception e) {
-                System.out.println("...");
-            }
+//            try {
+//                new ActionDatabase().averageNode(player1, player2);
+//            } catch (Exception e) {
+//                System.out.println("...");
+//            }
             System.out.println("Game Finished !");
+            updateBoardInfo();
 
             int winner = BoardHelper.getWinner(board);
             //JOptionPane.setDefaultLocale();
@@ -170,6 +171,7 @@ public class GamePanel extends JPanel implements GameEngine {
 
             }
             else{
+
                 if(winner==1)
                     JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
                 else if(winner==2)
@@ -313,7 +315,7 @@ public class GamePanel extends JPanel implements GameEngine {
             player2.setSearchDepth(lv);
         }
         else{
-            player1.setSearchDepth(lv);
+            player2.setSearchDepth(lv);
         }
 
     }
