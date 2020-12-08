@@ -211,12 +211,18 @@ public class GameWindow extends JFrame{
     }
 
 
-    public static void main(String[] args) {
-       /* int max = 10;
-        while(max-->0){
-        new GameWindow();
+    public static void main(String[] args) throws InterruptedException {/*
+        int max =5;
+        //new GameWindow();
+        for(int i=0;i<4;i++){
+            int a = max;
+            while(a-->0){
+                new GameWindow();
+            }
+            System.out.println(i);
+            long start = System.currentTimeMillis();
+            Thread.sleep(30000);
         }*/
-
         new GameWindow();
     }
 

@@ -77,7 +77,7 @@ public class MinimaxPruning {
         for(Point move : BoardHelper.getAllPossibleMoves(board,player)){
             int[][] newBord = BoardHelper.getNewBoardAfterMove(board,move,player);
             bestScore = Math.max(bestScore,MinValue(newBord,player,depth-1,e,alpha,beta));
-            if(bestScore>=beta){
+            if(bestScore>beta){
                 return bestScore;
             }
             alpha = Math.max(bestScore,alpha);
@@ -100,7 +100,7 @@ public class MinimaxPruning {
         for(Point move : BoardHelper.getAllPossibleMoves(board,opPlayer)){
             int[][] newBord = BoardHelper.getNewBoardAfterMove(board,move,opPlayer);
             bestScore = Math.min(bestScore,MaxValue(newBord,player,depth-1,e,alpha,beta));
-            if(bestScore<=alpha){
+            if(bestScore<alpha){
                 return bestScore;
             }
             beta = Math.min(beta,bestScore);

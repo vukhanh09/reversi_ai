@@ -25,7 +25,7 @@ public class RandomPlayer extends GamePlayer {
 
     @Override
     public String playerName() {
-        return null;
+        return "RandomPlayer";
     }
 
     @Override
