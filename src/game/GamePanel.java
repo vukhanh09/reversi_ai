@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements GameEngine {
 
     //reversi board
     int[][] board = null;
-    int[][][] undo = new int[30][8][8];
+    int[][][] undo = new int[60][8][8];
     int temp = 0;
 
     public static boolean CvsC = false;
@@ -119,13 +119,13 @@ public class GamePanel extends JPanel implements GameEngine {
         //updateTotalScore();
 
         //AI Handler Timer (to unfreeze gui)
-        player1HandlerTimer = new Timer(100,(ActionEvent e) -> {
+        player1HandlerTimer = new Timer(500,(ActionEvent e) -> {
             handleAI(player1);
             player1HandlerTimer.stop();
             manageTurn();
         });
 
-        player2HandlerTimer = new Timer(100,(ActionEvent e) -> {
+        player2HandlerTimer = new Timer(500,(ActionEvent e) -> {
             handleAI(player2);
             player2HandlerTimer.stop();
             manageTurn();
@@ -200,19 +200,18 @@ public class GamePanel extends JPanel implements GameEngine {
             }
         }else{
             //game finished
+
+
             int winner = BoardHelper.getWinner(board);
             //System.out.println(winner);
             try{
                 thongKe(winner);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
-            /*try {
-                new ActionDatabase().averageNode(player1, player2);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }*/
+
             System.out.println("Game Finished !");
+            updateBoardInfo();
 
             //JOptionPane.setDefaultLocale();
             if(CvsC){
@@ -223,10 +222,10 @@ public class GamePanel extends JPanel implements GameEngine {
 
             }
             else{
-                /*if(winner==1)
-                    //JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
+                if(winner==1)
+                    JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
                 else if(winner==2)
-                    //JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);*/
+                    JOptionPane.showMessageDialog(null,"                            YOU LOSE\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
 
                 reset();
                 player1HandlerTimer = new Timer(100,(ActionEvent e) -> {

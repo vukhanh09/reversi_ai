@@ -75,14 +75,14 @@ public class RealtimeEvaluator implements Evaluator {
     }
 
     static int[][] SQUARE_SCORE = {
-            {100 , -10 , 8  ,  6 ,  6 , 8  , -10 ,  100},
+            {100 , -10 , 15  ,  10 ,  10 , 15  , -10 ,  100},
             {-10 , -25 ,  -4, -4 , -4 , -4 , -25 , -10 },
-            {8   ,  -4 ,   6,   4,   4,   6,  -4 ,  8  },
-            {6   ,  -4 ,   4,   0,   0,   4,  -4 ,  6  },
-            {6   ,  -4 ,   4,   0,   0,   4,  -4 ,  6  },
-            {8   ,  -4 ,   6,   4,   4,   6,  -4 ,  8  },
+            {15   ,  -4 ,   6,   4,   4,   6,  -4 ,  15  },
+            {10   ,  -4 ,   4,   0,   0,   4,  -4 ,  10  },
+            {10   ,  -4 ,   4,   0,   0,   4,  -4 ,  10  },
+            {15  ,  -4 ,   6,   4,   4,   6,  -4 ,  15  },
             {-10 , -25 ,  -4, -4 , -4 , -4 , -25 , -10 },
-            {100 , -10 , 8  ,  6 ,  6 , 8  , -10 ,  100}
+            {100 , -10 , 15 ,  10 ,  10, 15 , -10 ,  100}
     };
 
     public static int placement(int[][] board , int player){
@@ -107,10 +107,16 @@ public class RealtimeEvaluator implements Evaluator {
         int myS = 0;
         int opS = 0;
 
+
         if(board[0][0] == player) myS += BoardHelper.getStableDisks(board,player,0,0).size();
+
         if(board[0][7] == player) myS += BoardHelper.getStableDisks(board,player,0,7).size();
+
         if(board[7][0] == player) myS += BoardHelper.getStableDisks(board,player,7,0).size();
+
         if(board[7][7] == player) myS += BoardHelper.getStableDisks(board,player,7,7).size();
+
+
 
         if(board[0][0] == oplayer) opS += BoardHelper.getStableDisks(board,oplayer,0,0).size();
         if(board[0][7] == oplayer) opS += BoardHelper.getStableDisks(board,oplayer,0,7).size();
@@ -119,12 +125,13 @@ public class RealtimeEvaluator implements Evaluator {
 
         return 100 * (myS - opS) / (myS + opS + 1);
     }
-
     public static int mobility(int[][] board , int player){
         int oplayer = (player==1) ? 2 : 1;
 
         int myMoveCount = getAllPossibleMoves(board,player).size();
         int opponentMoveCount = getAllPossibleMoves(board,oplayer).size();
+        if(opponentMoveCount == 0)
+            return 500;
 
         return 100 * (myMoveCount - opponentMoveCount) / (myMoveCount + opponentMoveCount + 1);
     }
