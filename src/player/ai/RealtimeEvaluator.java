@@ -20,19 +20,16 @@ public class RealtimeEvaluator implements Evaluator {
             score += weights[0] * mobility(board,player);
         }
         if(weights[1] != 0) {
-            score += weights[1] * frontier(board,player);
+            score += weights[1] * coinParity(board,player);
         }
         if(weights[2] != 0) {
-            score += weights[2] * coinParity(board,player);
+            score += weights[2] * placement(board,player);
         }
         if(weights[3] != 0) {
-            score += weights[3] * placement(board,player);
+            score += weights[3] * stability(board,player);
         }
         if(weights[4] != 0) {
-            score += weights[4] * stability(board,player);
-        }
-        if(weights[5] != 0) {
-            score += weights[5] * cornerCaptured(board,player);
+            score += weights[4] * cornerCaptured(board,player);
         }
 
         return score;
@@ -136,14 +133,14 @@ public class RealtimeEvaluator implements Evaluator {
         return 100 * (myMoveCount - opponentMoveCount) / (myMoveCount + opponentMoveCount + 1);
     }
 
-    public static int frontier(int[][] board , int player){
-        int oplayer = (player==1) ? 2 : 1;
-
-        int myF = BoardHelper.getFrontierSquares(board,player).size();
-        int opF = BoardHelper.getFrontierSquares(board,oplayer).size();
-
-        return 100 * (myF - opF) / (myF + opF + 1);
-    }
+//    public static int frontier(int[][] board , int player){
+//        int oplayer = (player==1) ? 2 : 1;
+//
+//        int myF = BoardHelper.getFrontierSquares(board,player).size();
+//        int opF = BoardHelper.getFrontierSquares(board,oplayer).size();
+//
+//        return 100 * (myF - opF) / (myF + opF + 1);
+//    }
 
     public static int cornerCaptured(int[][] board , int player){
         int oplayer = (player==1) ? 2 : 1;
