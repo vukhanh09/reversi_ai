@@ -67,11 +67,12 @@ public class GamePanel extends JPanel implements GameEngine {
     public GamePanel(){
 
         if(CvsC){
+            this.player1 = null;
             this.player1 = new AIPlayer(1,5,true);//Alpha - Beta
             this.player2 = new AIPlayer(2,5,false);//MiniMax
         }
         else{
-            player2 = new AIPlayer(2,1,true);
+            player2 = new AIPlayer(2,3,true);
         }
 
         this.setBackground(Color.WHITE);
@@ -202,11 +203,13 @@ public class GamePanel extends JPanel implements GameEngine {
 
 
             int winner = BoardHelper.getWinner(board);
-//            try{
-//                thongKe(winner);
-//            } catch (Exception throwables) {
-//                throwables.printStackTrace();
-//            }
+
+            //System.out.println(winner);
+            try{
+                thongKe(winner);
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
 
             System.out.println("Game Finished !");
             updateBoardInfo();
@@ -220,7 +223,6 @@ public class GamePanel extends JPanel implements GameEngine {
 
             }
             else{
-
                 if(winner==1)
                     JOptionPane.showMessageDialog(null,"                             YOU WIN\n"+"               YOU : " + p1score+"     --:--     "+p2score+" : CPU  ","Reversi",JOptionPane.PLAIN_MESSAGE);
                 else if(winner==2)
