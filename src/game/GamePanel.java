@@ -205,11 +205,11 @@ public class GamePanel extends JPanel implements GameEngine {
             int winner = BoardHelper.getWinner(board);
 
             //System.out.println(winner);
-            try{
+           /* try{
                 thongKe(winner);
             } catch (Exception throwables) {
                 throwables.printStackTrace();
-            }
+            }*/
 
             System.out.println("Game Finished !");
             updateBoardInfo();
