@@ -12,11 +12,11 @@ Chế độ chơi:
 + Random vs AI(Human)
 
 Các thuật toán sử dụng
-+ Minimax, cắt tỉa alpha,beta
++ Minimax; cắt tỉa alpha,beta
 + Các hàm heuristic
 
 Ứng dụng có tham khảo của tác giả : arminkz
-+ Sử dụng lại giao diện, các hàm phụ trợ, ngoài ta thì team đã phát triển, và chỉnh sửa lại nhiều các chức năng thuận tiện người chơi.
++ Sử dụng lại giao diện, các hàm phụ trợ, ngoài ta thì team đã phát triển, và chỉnh sửa lại nhiều các chức năng nhằm thuận tiện người chơi.
 + Code lại hàm minimax và cắt tỉa alpha,beta.
 + Nhóm có cải tiến thêm hàm heuristic đánh giá vị trí ô.
 + Link github tham khảo: https://github.com/arminkz/Reversi
